@@ -10,19 +10,28 @@
 #include "loadshaders.h"
 #include "main.h"
 
-GLfloat vertices[] = {
+GLfloat spaceshipVertices[] = {
 //  x       y
-	 0.0f,   0.25f,
-	-0.25f, -0.25f,
-	 0.0f,  -0.125f,
-	 0.25f, -0.25f,
+	 0.0f,   0.125f,
+	-0.125f, -0.125f,
+	 0.0f,  -0.0625f,
+	 0.125f, -0.125f,
 };
 
-GLuint elements[] = {
-	0, 1, 2,
-	0, 3, 2
+GLfloat asteroidVertices[] = {
+//  x       y
+	 0.5f,   0.125f,
+	 0.375f, -0.125f,
+	 0.5f,  -0.0625f,
+	 0.625f, -0.125f,
 };
 
+GLuint spaceshipElements[] = {
+	0, 1,
+	1, 2,
+	2, 3,
+	3, 0
+};
 
 int main()
 {
@@ -63,13 +72,15 @@ int main()
 	// so you will need an element buffer to link all the vertices.
 	// glGenBuffers() will assign vbo an object buffer name so that it can
 	// be referenced.
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
+	GLuint vbo[2];
+	glGenBuffers(2, vbo);
 	// Make vbo the current object with glBindBuffer() and then 'upload' data to it.
 	// GL_STATIC_DRAW means that the vertex data will be uploaded once and then
 	// drawn lots and lots of times.
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(spaceshipVertices), spaceshipVertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
 
 
 	// Create an element buffer. This will allow the vertices to be grouped into
@@ -77,40 +88,39 @@ int main()
 	GLuint ebo;
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements),
-		elements, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(spaceshipElements),
+		spaceshipElements, GL_STATIC_DRAW);
 
 	// The vertex data is useless if the shaders don't know what it all is. The
 	// VAO stores data on what all the vertices mean but it needs to be told
 	// before it is useful. Here, I will find references to the various vec*s
 	// defined in the fragment shader and then describe where that information
-	// is stored. This meta information is stored in the Vertex Array Object.
+	// is stored. This meta information is stored in the Vertex Array Object.	
 	GLint posAttrib = glGetAttribLocation(program, "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
 		2*sizeof(float), 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		// Close window if 'esc' key is pressed
 
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			vertices[0] += 0.5f;
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		}
-
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, GL_TRUE);
-
-
 
 		// Clear the screen to black
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
 		
 	}
 
