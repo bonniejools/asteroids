@@ -63,9 +63,8 @@ int main()
 	// will pass information on how the vertices are arranged and what data is
 	// where. This allows the shaders to use the data without having to work out
 	// what it is first.
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	GLuint vao[2];
+	glGenVertexArrays(1, vao);
 
 	// Create a Vertex Buffer Object which will contain all the vertex data.
 	// Remember that the vertices have no information stored about them and
@@ -77,11 +76,24 @@ int main()
 	// Make vbo the current object with glBindBuffer() and then 'upload' data to it.
 	// GL_STATIC_DRAW means that the vertex data will be uploaded once and then
 	// drawn lots and lots of times.
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(spaceshipVertices), spaceshipVertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
 
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBindVertexArray(vao[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(spaceshipVertices), spaceshipVertices, GL_STATIC_DRAW);
+	GLint posAttrib = glGetAttribLocation(program, "position");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+		2*sizeof(float), 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBindVertexArray(vao[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
+	// posAttrib = glGetAttribLocation(program, "position");
+	// glEnableVertexAttribArray(posAttrib);
+	
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBindVertexArray(vao[0]);
 
 	// Create an element buffer. This will allow the vertices to be grouped into
 	// triangles.
@@ -90,17 +102,6 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(spaceshipElements),
 		spaceshipElements, GL_STATIC_DRAW);
-
-	// The vertex data is useless if the shaders don't know what it all is. The
-	// VAO stores data on what all the vertices mean but it needs to be told
-	// before it is useful. Here, I will find references to the various vec*s
-	// defined in the fragment shader and then describe where that information
-	// is stored. This meta information is stored in the Vertex Array Object.	
-	GLint posAttrib = glGetAttribLocation(program, "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-		2*sizeof(float), 0);
-
 
 
 	while(!glfwWindowShouldClose(window))
@@ -116,10 +117,14 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+		posAttrib = glGetAttribLocation(program, "position");
+		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
 		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
+		posAttrib = glGetAttribLocation(program, "position");
 		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
 		
 	}
