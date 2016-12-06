@@ -9,29 +9,7 @@
 
 #include "loadshaders.h"
 #include "main.h"
-
-GLfloat spaceshipVertices[] = {
-//  x       y
-	 0.0f,   0.125f,
-	-0.125f, -0.125f,
-	 0.0f,  -0.0625f,
-	 0.125f, -0.125f,
-};
-
-GLfloat asteroidVertices[] = {
-//  x       y
-	 0.5f,   0.125f,
-	 0.375f, -0.125f,
-	 0.5f,  -0.0625f,
-	 0.625f, -0.125f,
-};
-
-GLuint spaceshipElements[] = {
-	0, 1,
-	1, 2,
-	2, 3,
-	3, 0
-};
+#include "player.cpp"
 
 int main()
 {
@@ -64,7 +42,7 @@ int main()
 	// where. This allows the shaders to use the data without having to work out
 	// what it is first.
 	GLuint vao[2];
-	glGenVertexArrays(1, vao);
+	glGenVertexArrays(2, vao);
 
 	// Create a Vertex Buffer Object which will contain all the vertex data.
 	// Remember that the vertices have no information stored about them and
@@ -77,32 +55,7 @@ int main()
 	// GL_STATIC_DRAW means that the vertex data will be uploaded once and then
 	// drawn lots and lots of times.
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glBindVertexArray(vao[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(spaceshipVertices), spaceshipVertices, GL_STATIC_DRAW);
-	GLint posAttrib = glGetAttribLocation(program, "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-		2*sizeof(float), 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-	glBindVertexArray(vao[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
-	// posAttrib = glGetAttribLocation(program, "position");
-	// glEnableVertexAttribArray(posAttrib);
-	
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-	glBindVertexArray(vao[0]);
-
-	// Create an element buffer. This will allow the vertices to be grouped into
-	// triangles.
-	GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(spaceshipElements),
-		spaceshipElements, GL_STATIC_DRAW);
-
+        Player player = Player(program);
 
 	while(!glfwWindowShouldClose(window))
 	{
@@ -117,16 +70,7 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-		posAttrib = glGetAttribLocation(program, "position");
-		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
-		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
-		posAttrib = glGetAttribLocation(program, "position");
-		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
-		
+                player.Draw();
 	}
 
 	glfwTerminate();
