@@ -4,12 +4,12 @@
 #include <SOIL/SOIL.h>
 #include <math.h>
 
+// x,y coords
 GLfloat spaceshipVertices[] = {
-    //  x       y
-     0.0f,   0.125f,
-    -0.125f, -0.125f,
-     0.0f,  -0.0625f,
-     0.125f, -0.125f,
+    0.0f,  1.0f,
+    1.0f, -1.0f,
+    0.0f, -0.5f,
+    -1.0f,-1.0f
 };
 
 GLuint spaceshipElements[] = {
@@ -28,13 +28,21 @@ class Player
     GLuint program;
     GLuint ebo;
 
-    public:
+    float scaling_x = 0.05;
+    float scaling_y = 0.05;
 
+    public:
     Player(GLuint program)
     {
         // Initialise buffers
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
+
+        // Run scaling
+        for (int i=0; i<4; i++) {
+            spaceshipVertices[2*i]     *= scaling_x;
+            spaceshipVertices[(2*i) + 1] *= scaling_y;
+        }
 
         // Upload to GPU
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);

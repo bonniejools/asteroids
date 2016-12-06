@@ -30,6 +30,7 @@ class Asteroid
     GLint posAttrib;
     GLuint program;
     GLuint ebo;
+    int size;
 
     // Generate a random asteroid
     void Generate()
@@ -51,7 +52,7 @@ class Asteroid
     float x = 0.0;
     float y = 0.0;
 
-    Asteroid(GLuint program)
+    Asteroid(GLuint program, int size)
     {
         // Initialise buffers
         glGenVertexArrays(1, &vao);
@@ -76,6 +77,7 @@ class Asteroid
                 asteroidElements, GL_STATIC_DRAW);
 
         this->program = program;
+        this->size    = size;
 
         return;
     }
