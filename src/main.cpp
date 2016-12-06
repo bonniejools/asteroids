@@ -59,6 +59,7 @@ int main()
 
                 player.Draw();
                 asteroid.Draw();
+
 	}
 
 	glfwTerminate();

@@ -39,7 +39,11 @@ class Player
         // Upload to GPU
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindVertexArray(vao);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(spaceshipVertices), spaceshipVertices, GL_STATIC_DRAW);
+	glBufferData(
+                GL_ARRAY_BUFFER,
+                sizeof(spaceshipVertices),
+                spaceshipVertices,
+                GL_STATIC_DRAW);
 	posAttrib = glGetAttribLocation(program, "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,

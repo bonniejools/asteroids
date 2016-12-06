@@ -41,13 +41,16 @@ class Asteroid
 
             asteroidVertices[2*i] = distance * sin(angle);
             asteroidVertices[2*i + 1] = distance * cos(angle);
-
         }
 
         return;
     }
 
     public:
+
+    float x = 0.0;
+    float y = 0.0;
+
     Asteroid(GLuint program)
     {
         // Initialise buffers
@@ -83,6 +86,27 @@ class Asteroid
         glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
         posAttrib = glGetAttribLocation(program, "position");
         glDrawElements(GL_LINES, sizeof(asteroidElements), GL_UNSIGNED_INT, 0);
+
+        return;
+    }
+
+    // Set the position
+    void SetPosition(float x, float y)
+    {
+        float diff_x = x - this->x;
+        float diff_y = y - this->y;
+
+        for (int i=0; i<8; i++) {
+            asteroidVertices[2*i] += diff_x;
+            asteroidVertices[2*i + 1] += diff_y;
+        }
+
+        this->x = x;
+        this->y = y;
+
+        // Update buffer
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
 
         return;
     }
