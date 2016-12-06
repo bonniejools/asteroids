@@ -3,20 +3,22 @@
 #include <GLFW/glfw3.h>
 #include <SOIL/SOIL.h>
 #include <math.h>
+#include <stdlib.h>
 
-GLfloat asteroidVertices[] = {
-    //  x       y
-     0.2f,   0.125f,
-     0.075f, -0.125f,
-     0.2f,  -0.0625f,
-     0.325f, -0.125f,
-};
+#include <iostream>
+using namespace std;
+
+GLfloat asteroidVertices[16];
 
 GLuint asteroidElements[] = {
     0, 1,
     1, 2,
     2, 3,
-    3, 0
+    3, 4,
+    4, 5,
+    5, 6,
+    6, 7,
+    7, 0,
 };
 
 
@@ -29,12 +31,31 @@ class Asteroid
     GLuint program;
     GLuint ebo;
 
+    // Generate a random asteroid
+    void Generate()
+    {
+        for (int i=0; i<8; i++) {
+            float distance = (rand() % 25) / 200.0;
+            distance += 0.2;
+            float angle = i * 2 * M_PI / 8;
+
+            asteroidVertices[2*i] = distance * sin(angle);
+            asteroidVertices[2*i + 1] = distance * cos(angle);
+
+        }
+
+        return;
+    }
+
     public:
     Asteroid(GLuint program)
     {
         // Initialise buffers
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
+
+        // Generate the asteroid
+        this->Generate();
 
         // Upload to GPU
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -61,7 +82,7 @@ class Asteroid
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
         posAttrib = glGetAttribLocation(program, "position");
-        glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINES, sizeof(asteroidElements), GL_UNSIGNED_INT, 0);
 
         return;
     }
