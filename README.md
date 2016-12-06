@@ -8,3 +8,10 @@ To compile, just enter:
 and then to run the program:
 
     $ ./output
+
+## Requirements
+The following can be installed on Ubuntu
+
+    libglew-dev
+    libglfw3-dev
+    libsoil-dev
