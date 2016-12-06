@@ -19,7 +19,6 @@ GLuint spaceshipElements[] = {
 	3, 0
 };
 
-
 class Player
 {
     float rotation = 0;
@@ -59,6 +58,7 @@ class Player
 
     void Draw() {
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
         glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
         posAttrib = glGetAttribLocation(program, "position");
         glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);

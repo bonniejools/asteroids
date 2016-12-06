@@ -10,6 +10,7 @@
 #include "loadshaders.h"
 #include "main.h"
 #include "player.cpp"
+#include "asteroid.cpp"
 
 int main()
 {
@@ -36,25 +37,11 @@ int main()
 		FRAGMENT_SHADER_LOCATION);
 	glUseProgram(program);
 
-	// Create a Vertex Array Object. The Vertex Array Object gives information
-	// about how the vertices are stored. once bound, glEnableVertexAttribArray()
-	// will pass information on how the vertices are arranged and what data is
-	// where. This allows the shaders to use the data without having to work out
-	// what it is first.
-	GLuint vao[2];
-	glGenVertexArrays(2, vao);
-
-	// Create a Vertex Buffer Object which will contain all the vertex data.
-	// Remember that the vertices have no information stored about them and
-	// so you will need an element buffer to link all the vertices.
-	// glGenBuffers() will assign vbo an object buffer name so that it can
-	// be referenced.
-	GLuint vbo[2];
-	glGenBuffers(2, vbo);
 	// Make vbo the current object with glBindBuffer() and then 'upload' data to it.
 	// GL_STATIC_DRAW means that the vertex data will be uploaded once and then
 	// drawn lots and lots of times.
 
+        Asteroid asteroid = Asteroid(program);
         Player player = Player(program);
 
 	while(!glfwWindowShouldClose(window))
@@ -71,8 +58,10 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
                 player.Draw();
+                asteroid.Draw();
 	}
 
 	glfwTerminate();
 	return 0;
 }
+
