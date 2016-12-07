@@ -41,7 +41,7 @@ int main()
     // GL_STATIC_DRAW means that the vertex data will be uploaded once and then
     // drawn lots and lots of times.
 
-    Asteroid asteroid = Asteroid(program, 4);
+    Asteroid asteroid = Asteroid(program, 3);
     Player player = Player(program);
 
     while(!glfwWindowShouldClose(window))

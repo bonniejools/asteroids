@@ -46,7 +46,21 @@ class Asteroid
             asteroidVertices[2*i + 1] = distance * cos(angle);
         }
 
+        this->MoveToStartingPosition();
+
         return;
+    }
+
+    void MoveToStartingPosition() {
+        float start_x = (rand() % 100) / 100.0;
+        start_x = start_x < 0.5 ? -1.0 + start_x : start_x;
+        float start_y = (rand() % 100) / 100.0;
+        start_y = start_y < 0.5 ? -1.0 + start_y : start_y;
+
+        for (int i=0; i<8; i++) {
+            asteroidVertices[2*i] += start_x;
+            asteroidVertices[2*i + 1] += start_y;
+        }
     }
 
     public:
