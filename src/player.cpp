@@ -45,17 +45,7 @@ class Player
         }
 
         // Upload to GPU
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindVertexArray(vao);
-	glBufferData(
-                GL_ARRAY_BUFFER,
-                sizeof(spaceshipVertices),
-                spaceshipVertices,
-                GL_STATIC_DRAW);
-	posAttrib = glGetAttribLocation(program, "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-		2*sizeof(float), 0);
+        this->Upload();
 
         // Create Ebo
 	glGenBuffers(1, &ebo);
@@ -68,11 +58,35 @@ class Player
         return;
     }
 
+    void Upload() {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+	glBufferData(
+                GL_ARRAY_BUFFER,
+                sizeof(spaceshipVertices),
+                spaceshipVertices,
+                GL_STATIC_DRAW);
+	posAttrib = glGetAttribLocation(program, "position");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+		2*sizeof(float), 0);
+    }
+
+    void Rotate(float rot) {
+        for (int i=0; i<4; i++) {
+            float curr_x = spaceshipVertices[2*i];
+            float curr_y = spaceshipVertices[2*i + 1];
+            spaceshipVertices[2*i] = cos(rot)*curr_x - sin(rot)*curr_y;
+            spaceshipVertices[2*i + 1] = sin(rot)*curr_x + cos(rot)*curr_y;
+        }
+
+        this->Upload();
+    }
+
     void Draw() {
+        // Bind relevant buffers and redraw
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindVertexArray(vao);
-        glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
-        posAttrib = glGetAttribLocation(program, "position");
         glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
 
         return;
