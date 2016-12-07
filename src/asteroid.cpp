@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include <iostream>
+#define MAX_ASTEROID_SIZE 6
 using namespace std;
 
 GLfloat asteroidVertices[16];
@@ -36,8 +37,9 @@ class Asteroid
     void Generate()
     {
         for (int i=0; i<8; i++) {
-            float distance = (rand() % 25) / 200.0;
-            distance += 0.2;
+            float distance = (rand() % 25) / 125.0; // 0.0 - 0.1
+            distance += 0.8; // 0.8 - 1.0
+            distance /= 1 << (MAX_ASTEROID_SIZE - size);
             float angle = i * 2 * M_PI / 8;
 
             asteroidVertices[2*i] = distance * sin(angle);
@@ -54,6 +56,9 @@ class Asteroid
 
     Asteroid(GLuint program, int size)
     {
+        this->program = program;
+        this->size    = size;
+
         // Initialise buffers
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
@@ -75,9 +80,6 @@ class Asteroid
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(asteroidElements),
                 asteroidElements, GL_STATIC_DRAW);
-
-        this->program = program;
-        this->size    = size;
 
         return;
     }
