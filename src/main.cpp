@@ -6,6 +6,8 @@
 #include <thread>
 #include <SOIL/SOIL.h>
 #include <math.h>
+#include <chrono>
+#include <ctime>
 
 #include "loadshaders.h"
 #include "main.h"
@@ -44,6 +46,8 @@ int main()
     Asteroid asteroid = Asteroid(program, 3);
     Player player = Player(program);
 
+    auto last_frame_time = std::chrono::high_resolution_clock::now();
+
     while(!glfwWindowShouldClose(window))
     {
         glfwSwapBuffers(window);
@@ -59,12 +63,18 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             player.Rotate(-0.1);
 
+        // Update the game objects
+        auto current_time = std::chrono::high_resolution_clock::now();
+        float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count();
+        last_frame_time = current_time;
+        asteroid.Update(time_delta / 1000.0);
+
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        player.Draw();
         asteroid.Draw();
+        player.Draw();
 
     }
 

@@ -33,6 +33,9 @@ class Asteroid
     GLuint ebo;
     int size;
 
+    float speed; // distance/s
+    float direction; // radians
+
     // Generate a random asteroid
     void Generate()
     {
@@ -46,6 +49,9 @@ class Asteroid
             asteroidVertices[2*i + 1] = distance * cos(angle);
         }
 
+        direction = 0;
+        speed = 0.5;
+
         this->MoveToStartingPosition();
 
         return;
@@ -57,10 +63,7 @@ class Asteroid
         float start_y = (rand() % 100) / 100.0;
         start_y = start_y < 0.5 ? -1.0 + start_y : start_y;
 
-        for (int i=0; i<8; i++) {
-            asteroidVertices[2*i] += start_x;
-            asteroidVertices[2*i + 1] += start_y;
-        }
+        SetPosition(start_x, start_y);
     }
 
     public:
@@ -81,13 +84,7 @@ class Asteroid
         this->Generate();
 
         // Upload to GPU
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBindVertexArray(vao);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
-        posAttrib = glGetAttribLocation(program, "position");
-        glEnableVertexAttribArray(posAttrib);
-        glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-                2*sizeof(float), 0);
+        this->Upload();
 
         // Create Ebo
         glGenBuffers(1, &ebo);
@@ -99,13 +96,21 @@ class Asteroid
     }
 
     void Draw() {
-        glBindVertexArray(vao);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
-        posAttrib = glGetAttribLocation(program, "position");
+        glBindVertexArray(vao);
         glDrawElements(GL_LINES, sizeof(asteroidElements), GL_UNSIGNED_INT, 0);
 
         return;
+    }
+
+    void Upload() {
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBindVertexArray(vao);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
+        posAttrib = glGetAttribLocation(program, "position");
+        glEnableVertexAttribArray(posAttrib);
+        glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+                2*sizeof(float), 0);
     }
 
     // Set the position
@@ -121,12 +126,17 @@ class Asteroid
 
         this->x = x;
         this->y = y;
-
-        // Update buffer
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(asteroidVertices), asteroidVertices, GL_STATIC_DRAW);
+        this->Upload();
 
         return;
+    }
+
+    void Update(float delta) {
+        float d_x = delta * speed * sin(direction);
+        float d_y = delta * speed * cos(direction);
+        SetPosition(x+d_x, y+d_y);
+        this->x += d_x;
+        this->y += d_y;
     }
 };
 

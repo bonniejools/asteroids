@@ -37,23 +37,17 @@ class Player
         // Initialise buffers
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+        this->program = program;
 
         // Run scaling
         for (int i=0; i<4; i++) {
-            spaceshipVertices[2*i]     *= scaling_x;
+            spaceshipVertices[2*i]       *= scaling_x;
             spaceshipVertices[(2*i) + 1] *= scaling_y;
         }
 
         // Upload to GPU
         this->Upload();
-
-        // Create Ebo
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(spaceshipElements),
-		spaceshipElements, GL_STATIC_DRAW);
-
-        this->program = program;
 
         return;
     }
@@ -70,6 +64,9 @@ class Player
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
 		2*sizeof(float), 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(spaceshipElements),
+                spaceshipElements, GL_STATIC_DRAW);
     }
 
     void Rotate(float rot) {
