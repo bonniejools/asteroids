@@ -48,7 +48,7 @@ class Asteroid
             asteroidVertices[2*i + 1] = distance * cos(angle);
         }
 
-        speed = 0.1;
+        speed = 0.15;
         this->SetRandomDirection();
         this->MoveToStartingPosition();
 
@@ -117,9 +117,23 @@ class Asteroid
                 2*sizeof(float), 0);
     }
 
-    // Set the position
+    // Set the position and shift to the 
     void SetPosition(float x, float y)
     {
+        // Swap sides if going over
+        if (x < -1.25) {
+            x = 1.15;
+        }
+        if (x > 1.25) {
+            x = -1.15;
+        }
+        if (y < -1.25) {
+            y = 1.15;
+        }
+        if (y > 1.25) {
+            y = -1.15;
+        }
+
         float diff_x = x - this->x;
         float diff_y = y - this->y;
 
@@ -139,8 +153,6 @@ class Asteroid
         float d_x = delta * speed * sin(direction);
         float d_y = delta * speed * cos(direction);
         SetPosition(x+d_x, y+d_y);
-        this->x += d_x;
-        this->y += d_y;
     }
 };
 

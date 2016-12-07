@@ -15,7 +15,7 @@
 #include "player.cpp"
 #include "asteroid.cpp"
 
-#define NUMBER_OF_ASTEROIDS 10
+#define NUMBER_OF_ASTEROIDS 5
 
 int main()
 {
