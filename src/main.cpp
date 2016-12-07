@@ -15,7 +15,7 @@
 #include "player.cpp"
 #include "asteroid.cpp"
 
-#define NUMBER_OF_ASTEROIDS 5
+#define NUMBER_OF_ASTEROIDS 10
 
 int main()
 {
@@ -65,6 +65,7 @@ int main()
 
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             player.Rotate(-0.1);
+
 
         // Update the game objects
         auto current_time = std::chrono::high_resolution_clock::now();

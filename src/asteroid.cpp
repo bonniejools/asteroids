@@ -32,9 +32,6 @@ class Asteroid
     GLuint ebo;
     int size;
 
-    float speed; // distance/s
-    float direction; // radians
-
     // Generate a random asteroid
     void Generate()
     {
@@ -73,6 +70,8 @@ class Asteroid
 
     float x = 0.0;
     float y = 0.0;
+    float speed; // distance/s
+    float direction; // radians
 
     Asteroid() {return;}
     Asteroid(GLuint program, int size)
