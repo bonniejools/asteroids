@@ -9,22 +9,21 @@
 #define MAX_ASTEROID_SIZE 6
 using namespace std;
 
-GLfloat asteroidVertices[16];
-
-GLuint asteroidElements[] = {
-    0, 1,
-    1, 2,
-    2, 3,
-    3, 4,
-    4, 5,
-    5, 6,
-    6, 7,
-    7, 0,
-};
-
-
 class Asteroid
 {
+    GLfloat asteroidVertices[16];
+
+    GLuint asteroidElements[16] = {
+        0, 1,
+        1, 2,
+        2, 3,
+        3, 4,
+        4, 5,
+        5, 6,
+        6, 7,
+        7, 0
+    };
+
     float rotation = 0;
     GLuint vao;
     GLuint vbo;
@@ -49,12 +48,16 @@ class Asteroid
             asteroidVertices[2*i + 1] = distance * cos(angle);
         }
 
-        direction = 0;
-        speed = 0.5;
-
+        speed = 0.1;
+        this->SetRandomDirection();
         this->MoveToStartingPosition();
 
         return;
+    }
+
+    void SetRandomDirection() {
+        direction = rand() % (int) (2 * M_PI * 1000);
+        direction /= 1000;
     }
 
     void MoveToStartingPosition() {
@@ -71,6 +74,7 @@ class Asteroid
     float x = 0.0;
     float y = 0.0;
 
+    Asteroid() {return;}
     Asteroid(GLuint program, int size)
     {
         this->program = program;
