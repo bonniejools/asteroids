@@ -63,12 +63,11 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
 
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            player.Rotate(0.1);
-
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-            player.Rotate(-0.1);
+            player.rotate(-0.1);
 
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+            player.rotate(0.1);
 
         // Update the game objects
         auto current_time = std::chrono::high_resolution_clock::now();
@@ -82,8 +81,8 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
-            asteroids[i].Draw();
+        //for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
+        //    asteroids[i].Draw();
         player.Draw();
 
     }
