@@ -46,7 +46,7 @@ int main()
     glUseProgram(program);
 
     // Seed the random number and generate asteroids.
-    Asteroid asteroids[NUMBER_OF_ASTEROIDS];
+    Asteroid *asteroids = (Asteroid *) malloc(NUMBER_OF_ASTEROIDS * sizeof(Asteroid));
     for (int i=0; i<NUMBER_OF_ASTEROIDS; i++) {
         asteroids[i] = Asteroid(program, 3);
     }
@@ -71,18 +71,15 @@ int main()
 
         // Update the game objects
         auto current_time = std::chrono::high_resolution_clock::now();
-        float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count();
+        //float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count();
         last_frame_time = current_time;
-
-        for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
-            asteroids[i].Update(time_delta / 1000.0);
 
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
-        //    asteroids[i].Draw();
+        for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
+            asteroids[i].Draw();
         player.Draw();
 
     }

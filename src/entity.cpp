@@ -9,6 +9,7 @@
 
 #include "entity.h"
 
+Entity::Entity() {}
 Entity::Entity(GLuint shaderProgram)
 {
     this->shaderProgram = shaderProgram;
@@ -17,8 +18,6 @@ Entity::Entity(GLuint shaderProgram)
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
-
-    // Set default model rotation
 }
 
 void Entity::Draw() {
@@ -26,7 +25,7 @@ void Entity::Draw() {
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindVertexArray(vao);
-    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINES, elementsSize, GL_UNSIGNED_INT, 0);
 
     return;
 }

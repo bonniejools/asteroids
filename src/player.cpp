@@ -22,7 +22,8 @@ GLuint spaceshipElements[] = {
     3, 0
 };
 
-class Player : public Entity {
+class Player : public Entity
+{
     public:
 
     Player(GLuint shaderProgram)

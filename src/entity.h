@@ -12,6 +12,7 @@ class Entity
 
     public:
     Entity(GLuint shaderProgram);
+    Entity();
 
     GLfloat *vertices;
     GLuint *elements;
