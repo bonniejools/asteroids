@@ -6,10 +6,10 @@
 #define 	WINDOW_TITLE				"Asteroids"
 
 // Window height
-#define		WINDOW_HEIGHT				800
+#define		WINDOW_HEIGHT				1200
 
 // Window width
-#define		WINDOW_WIDTH				800
+#define		WINDOW_WIDTH				1200
 
 // Vertex shader location
 #define		VERTEX_SHADER_LOCATION		"shaders/vertex.glsl"
