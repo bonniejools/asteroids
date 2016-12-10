@@ -54,9 +54,9 @@ int main()
 
     // Create the camera
     glm::mat4 view = glm::lookAt(
-                glm::vec3(1.2f, 1.2f, 1.2f),
-                    glm::vec3(0.0f, 0.0f, 0.0f),
-                        glm::vec3(0.0f, 0.0f, 1.0f)
+                glm::vec3(0.0f, -1.2f, 1.2f),
+                glm::vec3(0.0f, 0.0f, 0.0f),
+                glm::vec3(0.0f, 0.0f, 1.0f)
             );
     GLint uniView = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
@@ -76,11 +76,18 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
 
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-            player.rotate(-0.1);
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            player.rotate(-PLAYER_ROT_SPEED);
+            view = glm::rotate(view, PLAYER_ROT_SPEED, glm::vec3(0.0f, 0.0f, 1.0f));
+        }
 
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            player.rotate(0.1);
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            player.rotate(PLAYER_ROT_SPEED);
+            view = glm::rotate(view, -PLAYER_ROT_SPEED, glm::vec3(0.0f, 0.0f, 1.0f));
+        }
+
+        GLint uniView = glGetUniformLocation(shaderProgram, "view");
+        glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
         // Update the game objects
         auto current_time = std::chrono::high_resolution_clock::now();
