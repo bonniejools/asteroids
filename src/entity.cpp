@@ -63,6 +63,14 @@ void Entity::Upload()
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 }
 
+void Entity::Update(float time_delta)
+{
+    float d_y = time_delta * this->speed * cos(direction);
+    float d_x = time_delta * this->speed * sin(direction);
+
+    trans = glm::translate(trans, glm::vec3(d_x, d_y, 0.0f));
+}
+
 void Entity::setScaling(float scalar)
 {
     scale = glm::scale(scale, glm::vec3(scalar, scalar, scalar));
@@ -75,6 +83,7 @@ void Entity::rotate(float radians)
 
 void Entity::setPosition(float x, float y)
 {
-    trans = glm::translate(trans, glm::vec3(x, y, 0.0f));
+    glm::mat4 idtrans;
+    trans = glm::translate(idtrans, glm::vec3(x, y, 0.0f));
 }
 

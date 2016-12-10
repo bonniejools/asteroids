@@ -3,6 +3,25 @@
 
 class Entity
 {
+    public:
+    GLfloat *vertices;
+    GLuint *elements;
+    int verticesSize;
+    int elementsSize;
+    float direction = 0.0;
+    float speed     = 0.0;
+
+    Entity(GLuint shaderProgram);
+    Entity();
+    void setScaling(float scalar);
+    void rotate(float radians);
+    void setPosition(float x, float y);
+    void Draw();
+    void Update(float time_delta);
+
+
+    private:
+    void Upload();
     GLuint shaderProgram;
     glm::mat4 model; // The rotation
     glm::mat4 scale; // The scaling
@@ -10,22 +29,7 @@ class Entity
     GLuint vao;
     GLuint vbo;
     GLuint ebo;
-
-    public:
-    Entity(GLuint shaderProgram);
-    Entity();
-
-    GLfloat *vertices;
-    GLuint *elements;
-    int verticesSize;
-    int elementsSize;
-    void setScaling(float scalar);
-    void rotate(float radians);
-    void setPosition(float x, float y);
-    void Draw();
-
-    private:
-    void Upload();
 };
 
 #endif
+

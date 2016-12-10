@@ -11,9 +11,6 @@ using namespace std;
 
 class Asteroid : public Entity
 {
-    int size;
-    float speed;
-
     GLfloat asteroidVertices[16];
     GLuint asteroidElements[16] = {
         0, 1,
@@ -41,7 +38,7 @@ class Asteroid : public Entity
         return;
     }
 
-    void moveToRandomPosition()
+    void setRandomPosition()
     {
         float rand_x = (rand() % 1000) / 1000.0;
         float rand_y = (rand() % 1000) / 1000.0;
@@ -50,6 +47,11 @@ class Asteroid : public Entity
         rand_y = rand_y < 0.5 ? rand_y - 1.0 : rand_y;
 
         this->setPosition(rand_x, rand_y);
+    }
+
+    void setRandomDirection()
+    {
+        this->direction = (rand() % ((int) (M_PI * 1000))) / 1000.0;
     }
 
     public:
@@ -65,7 +67,9 @@ class Asteroid : public Entity
 
         this->setScaling(1.0 / (1 << (MAX_ASTEROID_SIZE - size)));
 
-        this->moveToRandomPosition();
+        this->setRandomPosition();
+        this->setRandomDirection();
+        this->speed = 0.1;
 
         return;
     }

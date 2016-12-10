@@ -71,8 +71,10 @@ int main()
 
         // Update the game objects
         auto current_time = std::chrono::high_resolution_clock::now();
-        //float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count();
+        float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count();
         last_frame_time = current_time;
+        for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
+            asteroids[i].Update(time_delta / 1000);
 
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
