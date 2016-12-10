@@ -5,8 +5,9 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "constants.h"
+
 #include <iostream>
-#define MAX_ASTEROID_SIZE 6
 using namespace std;
 
 class Asteroid : public Entity
@@ -69,7 +70,7 @@ class Asteroid : public Entity
 
         this->setRandomPosition();
         this->setRandomDirection();
-        this->speed = 0.1;
+        this->speed = ASTEROID_SPEED;
 
         return;
     }

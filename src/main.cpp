@@ -14,7 +14,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "loadshaders.h"
-#include "main.h"
+#include "constants.h"
 #include "player.cpp"
 #include "asteroid.cpp"
 
@@ -54,7 +54,7 @@ int main()
 
     // Create the camera
     glm::mat4 view = glm::lookAt(
-                glm::vec3(0.0f, -1.2f, 1.2f),
+                glm::vec3(0.0f, -CAMERA_DISTANCE, CAMERA_DISTANCE),
                 glm::vec3(0.0f, 0.0f, 0.0f),
                 glm::vec3(0.0f, 0.0f, 1.0f)
             );

@@ -20,7 +20,6 @@
 // Game variables
 #define         PLAYER_ROT_SPEED                0.075f
 #define         CAMERA_DISTANCE                 1.2f
+#define         ASTEROID_SPEED                  0.1f
+#define         MAX_ASTEROID_SIZE               6
 
-/*
-** FUNCTION PROTOTYPES
-*/
