@@ -54,6 +54,8 @@ class Asteroid : public Entity
 
         this->setScaling(1.0 / (1 << (MAX_ASTEROID_SIZE - size)));
 
+        this->setPosition(0.5, 0.5);
+
         return;
     }
 };

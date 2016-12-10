@@ -57,6 +57,10 @@ void Entity::Upload()
     // Upload model(rotation) matrix
     GLint uniModel = glGetUniformLocation(shaderProgram, "model");
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
+
+    // Upload model(rotation) matrix
+    GLint uniTrans = glGetUniformLocation(shaderProgram, "trans");
+    glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 }
 
 void Entity::setScaling(float scalar)
@@ -67,5 +71,10 @@ void Entity::setScaling(float scalar)
 void Entity::rotate(float radians)
 {
     model = glm::rotate(model, radians, glm::vec3(0.0f, 0.0f, 1.0f));
+}
+
+void Entity::setPosition(float x, float y)
+{
+    trans = glm::translate(trans, glm::vec3(x, y, 0.0f));
 }
 
