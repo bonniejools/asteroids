@@ -10,6 +10,7 @@ class Entity
     int elementsSize;
     float direction = 0.0;
     float speed     = 0.0;
+    glm::vec3 position;
 
     Entity(GLuint shaderProgram);
     Entity();

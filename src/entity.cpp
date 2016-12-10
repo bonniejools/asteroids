@@ -58,7 +58,9 @@ void Entity::Upload()
     GLint uniModel = glGetUniformLocation(shaderProgram, "model");
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
 
-    // Upload model(rotation) matrix
+    // Upload translation matrix
+    glm::mat4 idmat;
+    trans = glm::translate(idmat, position);
     GLint uniTrans = glGetUniformLocation(shaderProgram, "trans");
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 }
@@ -68,7 +70,8 @@ void Entity::Update(float time_delta)
     float d_y = time_delta * this->speed * cos(direction);
     float d_x = time_delta * this->speed * sin(direction);
 
-    trans = glm::translate(trans, glm::vec3(d_x, d_y, 0.0f));
+    position.x += d_x;
+    position.y += d_y;
 }
 
 void Entity::setScaling(float scalar)
@@ -83,7 +86,6 @@ void Entity::rotate(float radians)
 
 void Entity::setPosition(float x, float y)
 {
-    glm::mat4 idtrans;
-    trans = glm::translate(idtrans, glm::vec3(x, y, 0.0f));
+    position = glm::vec3(x, y, 0.0f);
 }
 

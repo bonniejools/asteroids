@@ -73,5 +73,21 @@ class Asteroid : public Entity
 
         return;
     }
+
+    void Update(float time_delta)
+    {
+        Entity::Update(time_delta);
+
+        if (abs(position.x) > 1.15)
+        {
+            position.x = -position.x;
+        }
+
+        if (abs(position.y) > 1.15)
+        {
+            position.y = -position.y;
+        }
+        return;
+    }
 };
 
