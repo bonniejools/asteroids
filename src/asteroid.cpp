@@ -41,6 +41,17 @@ class Asteroid : public Entity
         return;
     }
 
+    void moveToRandomPosition()
+    {
+        float rand_x = (rand() % 1000) / 1000.0;
+        float rand_y = (rand() % 1000) / 1000.0;
+
+        rand_x = rand_x < 0.5 ? rand_x - 1.0 : rand_x;
+        rand_y = rand_y < 0.5 ? rand_y - 1.0 : rand_y;
+
+        this->setPosition(rand_x, rand_y);
+    }
+
     public:
     Asteroid(GLuint program, int size)
         : Entity(program)
@@ -54,7 +65,7 @@ class Asteroid : public Entity
 
         this->setScaling(1.0 / (1 << (MAX_ASTEROID_SIZE - size)));
 
-        this->setPosition(0.5, 0.5);
+        this->moveToRandomPosition();
 
         return;
     }
