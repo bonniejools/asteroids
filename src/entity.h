@@ -21,6 +21,7 @@ class Entity
     Entity();
     void setScaling(float scalar);
     void rotate(float radians);
+    void setRotation(float radians);
     void setPosition(float x, float y);
     void Draw();
     void Update(float time_delta);

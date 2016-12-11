@@ -82,6 +82,11 @@ void Entity::rotate(float radians)
     model = glm::rotate(model, radians, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
+void Entity::setRotation(float radians)
+{
+    model = glm::rotate(glm::mat4(), radians, glm::vec3(0.0f, 0.0f, 1.0f));
+}
+
 void Entity::setPosition(float x, float y)
 {
     position = glm::vec3(x, y, 0.0f);

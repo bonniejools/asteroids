@@ -19,8 +19,11 @@ class Bullet : public Entity
         this->elements = bulletElements;
         this->elementsSize = sizeof(bulletElements);
 
-        this->setScaling(0.02);
+        this->setScaling(0.03);
         this->speed = BULLET_SPEED;
+
+        this->direction = -direction;
+        this->setRotation(direction);
     }
 };
 

@@ -22,4 +22,7 @@
 #define         CAMERA_DISTANCE                 1.2f
 #define         ASTEROID_SPEED                  0.1f
 #define         MAX_ASTEROID_SIZE               6
+#define         NUMBER_OF_ASTEROIDS             10
+#define         BULLET_SPEED                    1.5f
+#define         RELOAD_TIME                     0.2f
 

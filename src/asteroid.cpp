@@ -31,7 +31,7 @@ void Asteroid::Generate()
     for (int i=0; i<NUM_ASTEROID_VERTICES; i++) {
         float distance = (rand() % 25) / 125.0; // range 0.0 - 0.1
         distance += 0.8; // 0.8 - 1.0
-        float angle = i * 2 * M_PI / 8;
+        float angle = i * 2 * M_PI / NUM_ASTEROID_VERTICES;
 
         vertices[2*i] = distance * sin(angle);
         vertices[2*i + 1] = distance * cos(angle);

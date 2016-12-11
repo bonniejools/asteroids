@@ -18,7 +18,8 @@
 #include "player.cpp"
 #include "asteroid.h"
 
-#define NUMBER_OF_ASTEROIDS 10
+#include "bullet.cpp"
+
 
 int main()
 {
@@ -51,6 +52,7 @@ int main()
         asteroids[i] = Asteroid(shaderProgram, 3);
     }
     Player player = Player(shaderProgram);
+    Bullet bullet = Bullet(shaderProgram, 0.0f);
 
     // Create the camera
     glm::mat4 view = glm::lookAt(
@@ -67,6 +69,9 @@ int main()
 
     auto last_frame_time = std::chrono::high_resolution_clock::now();
 
+    // Orientation of the camera and player
+    float direction = 0.0;
+
     while(!glfwWindowShouldClose(window))
     {
         glfwSwapBuffers(window);
@@ -77,13 +82,18 @@ int main()
             glfwSetWindowShouldClose(window, GL_TRUE);
 
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            player.rotate(-PLAYER_ROT_SPEED);
+            direction -= PLAYER_ROT_SPEED;
+            player.setRotation(direction);
             view = glm::rotate(view, PLAYER_ROT_SPEED, glm::vec3(0.0f, 0.0f, 1.0f));
         }
-
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            player.rotate(PLAYER_ROT_SPEED);
+            direction += PLAYER_ROT_SPEED;
+            player.setRotation(direction);
             view = glm::rotate(view, -PLAYER_ROT_SPEED, glm::vec3(0.0f, 0.0f, 1.0f));
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            bullet = Bullet(shaderProgram, direction);
         }
 
         GLint uniView = glGetUniformLocation(shaderProgram, "view");
@@ -91,10 +101,14 @@ int main()
 
         // Update the game objects
         auto current_time = std::chrono::high_resolution_clock::now();
-        float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count();
+        float time_delta = std::chrono::duration<double, std::milli>(current_time - last_frame_time).count() / 1000.0;
         last_frame_time = current_time;
+
         for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
-            asteroids[i].Update(time_delta / 1000);
+        {
+            asteroids[i].Update(time_delta);
+        }
+        bullet.Update(time_delta);
 
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -106,6 +120,8 @@ int main()
         }
 
         player.Draw();
+        bullet.Draw();
+
     }
 
     glfwTerminate();
