@@ -16,7 +16,7 @@
 #include "loadshaders.h"
 #include "constants.h"
 #include "player.cpp"
-#include "asteroid.cpp"
+#include "asteroid.h"
 
 #define NUMBER_OF_ASTEROIDS 10
 
@@ -46,7 +46,7 @@ int main()
     glUseProgram(shaderProgram);
 
     // Seed the random number and generate asteroids.
-    Asteroid *asteroids = (Asteroid *) malloc(NUMBER_OF_ASTEROIDS * sizeof(Asteroid));
+    Asteroid asteroids[NUMBER_OF_ASTEROIDS];
     for (int i=0; i<NUMBER_OF_ASTEROIDS; i++) {
         asteroids[i] = Asteroid(shaderProgram, 3);
     }
@@ -71,8 +71,8 @@ int main()
     {
         glfwSwapBuffers(window);
         glfwPollEvents();
-        // Close window if 'esc' key is pressed
 
+        // Close window if 'esc' key is pressed
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
 
@@ -101,9 +101,11 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         for (int i=0; i<NUMBER_OF_ASTEROIDS; i++)
+        {
             asteroids[i].Draw();
-        player.Draw();
+        }
 
+        player.Draw();
     }
 
     glfwTerminate();

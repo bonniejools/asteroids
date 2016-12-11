@@ -25,6 +25,7 @@ void Entity::Draw() {
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glDrawElements(GL_LINES, elementsSize, GL_UNSIGNED_INT, 0);
 
     return;
@@ -35,11 +36,8 @@ void Entity::Upload()
     // Bind the vertex buffer and upload vertices.
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindVertexArray(vao);
-    glBufferData(
-            GL_ARRAY_BUFFER,
-            verticesSize,
-            vertices,
-            GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verticesSize,
+            vertices, GL_STATIC_DRAW);
 
     // Define vertices as positions
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
