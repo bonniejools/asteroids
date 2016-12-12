@@ -7,7 +7,7 @@ To compile, just enter:
 
 and then to run the program:
 
-    $ ./output
+    $ ./asteroids
 
 ## Requirements
 The following can be installed on Ubuntu
